@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'rest_framework',
     'todo_app.apps.TodoAppConfig',
+    'todo_api.apps.TodoApiConfig',
 
 ]
 
