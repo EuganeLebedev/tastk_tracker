@@ -1,8 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets, views
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
 
 from .serializers import ToDoTaskSerializer, ProjectSerrializer
 from todo_app.models import ToDoTask, Project
@@ -39,3 +41,14 @@ class TaskAPIListView(views.APIView):
 class ProjectAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProjectSerrializer
     queryset = Project.objects.all()
+
+
+class ProjectViewSet(ModelViewSet):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerrializer
+
+    @action(detail=True)
+    def tasks(self, request, pk):
+        project = self.get_object()
+        serrializer = ProjectSerrializer(project.todotask_set, many=True)
+        return Response(serrializer.data)

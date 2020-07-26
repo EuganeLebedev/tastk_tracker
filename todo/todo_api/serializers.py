@@ -12,4 +12,4 @@ class ToDoTaskSerializer(serializers.ModelSerializer):
 class ProjectSerrializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = 'title'
+        fields = 'id', 'title'
