@@ -2,9 +2,10 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets, views
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import generics
 
-from .serializers import ToDoTaskSerializer
-from todo_app.models import ToDoTask
+from .serializers import ToDoTaskSerializer, ProjectSerrializer
+from todo_app.models import ToDoTask, Project
 # Create your views here.
 
 class IndexAPIView(views.APIView):
@@ -21,8 +22,6 @@ class TaskAPIDetailView(views.APIView):
         return Response(serialized_task.data)
 
 
-
-
 class TaskAPIListView(views.APIView):
     def get(self, request):
         tasks_list = ToDoTask.objects.all()
@@ -35,3 +34,8 @@ class TaskAPIListView(views.APIView):
             data.save()
             return Response(data.data)
         return Response(data.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProjectAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProjectSerrializer
+    queryset = Project.objects.all()
